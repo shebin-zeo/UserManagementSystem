@@ -18,4 +18,11 @@ export class HomeComponent {
     this.router.navigate(['/list'])
   }
 
+  logout()
+  {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    this.router.navigate(['/login'])
+  }
+
 }
