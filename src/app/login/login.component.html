@@ -1,5 +1,6 @@
 <div class="min-h-screen w-full flex items-center justify-center bg-[#050505] relative overflow-hidden font-sans">
-  
+      <p-toast position="top-right" key="t1"></p-toast> //For
+
   <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] animate-pulse"></div>
   <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
 
@@ -13,7 +14,7 @@
       Sign in to your account
     </p>
 
-    <form  class="space-y-6">
+    <form  class="space-y-6" (ngSubmit)="login()">
       <div class="relative">
         <input
           placeholder="Username"
@@ -46,9 +47,10 @@
         <a class="text-sm text-purple-300 hover:text-white transition-colors" href="#">Forgot password?</a>
       </div>
 
+      
       <button
         class="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 rounded-lg shadow-lg text-white font-bold transform hover:scale-[1.02] active:scale-95 transition duration-200"
-        (click)="login()"
+        type="submit"
       >
         Sign In
       </button>

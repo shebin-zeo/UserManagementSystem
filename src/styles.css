@@ -1,6 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Define CSS Layers - Controls priority */
+@layer tailwind, primeng;
+
+/* Tailwind gets lower priority */
+@layer tailwind {
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+}
+
+/* PrimeNG gets higher priority - it will override Tailwind when needed */
+@layer primeng {
+  /* This ensures PrimeNG styles loaded from angular.json get higher priority */
+}

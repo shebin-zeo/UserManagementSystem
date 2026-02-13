@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
+  safelist: [
+    {
+      pattern: /^p-/,  // Protect all PrimeNG classes
+    }
+  ],
   theme: {
     extend: {
       keyframes: {
@@ -20,4 +25,7 @@ module.exports = {
     },
   },
   plugins: [],
+   corePlugins: {
+    preflight: true, // Disable Tailwind's base reset else PrimeNg styles will be overridden
+  }
 }
