@@ -1,0 +1,41 @@
+<p-table
+  [value]="users"
+  [lazy]="true"
+  (onLazyLoad)="loadUsers($event)"
+  [paginator]="true"
+  [rows]="10"
+  [totalRecords]="totalRecords"
+  [loading]="loading"
+>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>User ID</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Created By</th>
+      <th>created on</th>
+      <th>Modified By</th>
+      <th>Modified On</th>
+      <th>Status</th>
+      <th>User Type</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-user>
+    <tr>
+      <td>{{ user.userId }}</td>
+      <td>{{ user.firstName }}</td>
+      <td>{{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.createdBy }}</td>
+      <td>{{ user.createdOn }}</td>
+      <td>{{ user.modifiedBy }}</td>
+      <td>{{ user.modifiedOn }}</td>
+      <td>{{ user.status }}</td>
+      <td>{{ user.userType }}</td>
+    </tr>
+  </ng-template>
+
+</p-table>
