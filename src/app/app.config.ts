@@ -6,6 +6,12 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { authInterceptor } from './login/auth.interceptor';
+import { refreshInterceptor } from './login/refresh.interceptor';
+import { errorInterceptor } from './login/error.interceptor';
+import { retryInterceptor } from './login/retry.interceptor';
+
+
+
 
 
 export const appConfig: ApplicationConfig = {
@@ -14,7 +20,17 @@ export const appConfig: ApplicationConfig = {
      provideClientHydration(),
      provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptor])
+      withInterceptors(
+
+        [
+          authInterceptor,
+          refreshInterceptor,
+          retryInterceptor,
+          errorInterceptor
+
+        ],
+       
+      )
     ),
      provideAnimations(),
     ],

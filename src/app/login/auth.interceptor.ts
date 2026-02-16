@@ -1,29 +1,23 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { inject, PLATFORM_ID } from '@angular/core';
+import { inject } from '@angular/core';
 import { AuthService } from '../service/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
+  const authService = inject(AuthService);
+  const token = authService.getToken();
 
-  const platformId=inject(PLATFORM_ID)
-  
 
-  const token=inject(AuthService).getToken();
-  // const token=
+  // 1. Define routes that should NOT have the Bearer token
+  const isExcluded = req.url.includes('/api/auth/login') || req.url.includes('/api/auth/refresh');
 
-  if(req.url.includes('/login'))
-  {
-    return next(req)
-  }
-
-  if(token)
-  {
-    req=req.clone({
-      setHeaders:{
-        Authorization:`Bearer ${token}`
+  if (token && !isExcluded) {
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
       }
-    })
+    });
   }
-  
+
   return next(req);
 };

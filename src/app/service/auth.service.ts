@@ -1,45 +1,54 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { isPlatformBrowser } from '@angular/common';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
-
-export interface LoginBody{
-  username:string;
-  password:string;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private apI=environment.loginApi;
+  private accessToken: string | null = null;
 
-  private platformId=inject(PLATFORM_ID)
+  constructor(private http: HttpClient) {}
 
-
-  constructor(
-   private http:HttpClient
-  ) { }
-
-  login(body:LoginBody):Observable<any>{
-    return this.http.post(`${this.apI}/login`,body)
+  login(body: any): Observable<any> {
+    return this.http.post<any>('/api/auth/login', body, {
+      withCredentials: true
+    }).pipe(
+      tap(res => {
+        this.accessToken = res.accessToken;
+      })
+    );
   }
 
-  isLoggedIn():boolean
-  {
-    const token=localStorage.getItem('access_token');
-    return !!token;
+  getToken(): string | null {
+    return this.accessToken;
   }
 
-  getToken():string | null {
-    if(isPlatformBrowser(this.platformId))
-    {
-      return localStorage.getItem("access_token");
-    }
-    return  null
+  storeAccessToken(token: string) {
+    this.accessToken = token;
   }
 
+  refreshToken(): Observable<any> {
+    return this.http.post<any>('/api/auth/refresh', {}, {
+      withCredentials: true
+    });
+  }
+
+  logout(): Observable<any> {
+    this.accessToken = null;
+    return this.http.post('/api/auth/logout', {}, {
+      withCredentials: true
+    });
+  }
+
+   isAuthenticated(): boolean {
+    return !!this.accessToken;
+  }
+
+  restoreSession(): Observable<any> {
+    return this.refreshToken().pipe(
+      tap(res => {
+        this.accessToken = res.accessToken;
+      })
+    );
+  }
 }

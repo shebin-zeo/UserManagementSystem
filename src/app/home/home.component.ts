@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class HomeComponent {
 
   private router=inject(Router);
+  private authService=inject(AuthService);
 
   navigateToList()
   {
@@ -20,8 +22,8 @@ export class HomeComponent {
 
   logout()
   {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    this.authService.logout();
+   
     this.router.navigate(['/login'])
   }
 

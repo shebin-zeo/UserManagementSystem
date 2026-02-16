@@ -1,25 +1,31 @@
-import { isPlatformBrowser } from '@angular/common';
-import { inject, PLATFORM_ID } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../service/auth.service';
+import { catchError, map, of } from 'rxjs';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = () => {
 
-  const router=inject(Router);
-  const platformId=inject(PLATFORM_ID);
-  // const token=localStorage.getItem("access_token");
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const platformId = inject(PLATFORM_ID);
 
-  if(isPlatformBrowser(platformId))
-  {
-    const token=inject(AuthService).isLoggedIn();
-    if(!token)
-    {
-      router.navigate(['/login'])
-      return false;
-    }
+  // If not browser (SSR) → allow
+  if (!isPlatformBrowser(platformId)) {
+    return true;
   }
 
+  // If token exists → allow
+  if (authService.isAuthenticated()) {
+    return true;
+  }
 
-  
-  return true;
+  // Try restoring session
+  return authService.restoreSession().pipe(
+    map(() => true),
+    catchError(() => {
+      router.navigate(['/login']);
+      return of(false);
+    })
+  );
 };
