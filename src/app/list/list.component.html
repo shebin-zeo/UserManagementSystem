@@ -1,3 +1,72 @@
+
+<p-toast key="t1"></p-toast>
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <p-button 
+            label="Create" 
+            icon="pi pi-plus"
+            severity="success" 
+            [outlined]="true"
+            class="mr-2" 
+            (click)="createUser()" 
+        />
+        <p-button 
+            label="View" 
+            icon="pi pi-eye"
+            severity="info" 
+            [outlined]="true"
+            class="mr-2" 
+            (click)="viewUser()" 
+        />
+        <p-button 
+            label="Update" 
+            icon="pi pi-pencil"
+            severity="warning" 
+            [outlined]="true"
+            class="mr-2" 
+            (click)="updateUser()" 
+        />
+         <p-button 
+            label="Delete" 
+            icon="pi pi-trash"
+            severity="danger" 
+            [outlined]="true"
+            class="mr-2" 
+            (click)="deleteUser()" 
+        />
+        <!-- <p-button
+        label="Verify"
+        icon="pi pi-check"
+        severity="contrast",
+        [outlined]="true"
+        class="mr-2"
+        /> -->
+    </div>
+    
+    <div class="p-toolbar-group-end">
+       
+        <p-button 
+            label="Home" 
+            icon="pi pi-home"
+            severity="help" 
+            [outlined]="true"
+            class="mr-2"
+            (click)="goHome()" 
+        />
+        <p-button
+        label="Exit"
+        icon="pi pi-sign-out"
+        severity="danger"
+        [outlined]="true"
+        class="mr-2"
+        (click)="logout()"
+    
+/>
+      
+    </div>
+</p-toolbar>
+
+
 <p-table
   [value]="users"
   [lazy]="true"
@@ -6,6 +75,9 @@
   [rows]="10"
   [totalRecords]="totalRecords"
   [loading]="loading"
+  selectionMode="single"
+  [(selection)]="selectedUser"
+  dataKey="userId"
 >
 
   <ng-template pTemplate="header">
@@ -14,30 +86,22 @@
       <th>First Name</th>
       <th>Last Name</th>
       <th>Email</th>
-      <th>Created By</th>
-      <th>created on</th>
-      <th>Modified By</th>
-      <th>Modified On</th>
-      <th>Status</th>
-      <th>User Type</th>
+      <!-- <th>Status</th>
+      <th>User Type</th> -->
     </tr>
   </ng-template>
 
   <ng-template pTemplate="body" let-user>
-<tr 
-    class="cursor-pointer hover:bg-gray-100"
-    (click)="viewUser(user.userId)"
-  >
+ <tr 
+      [pSelectableRow]="user"
+      class="cursor-pointer"
+    >
       <td>{{ user.userId }}</td>
       <td>{{ user.firstName }}</td>
       <td>{{ user.lastName }}</td>
       <td>{{ user.email }}</td>
-      <td>{{ user.createdBy }}</td>
-      <td>{{ user.createdOn }}</td>
-      <td>{{ user.modifiedBy }}</td>
-      <td>{{ user.modifiedOn }}</td>
-      <td>{{ user.status }}</td>
-      <td>{{ user.userType }}</td>
+      <!-- <td>{{userStatus[user.status] }}</td>
+      <td>{{ userTypeMap[user.userType] }}</td> -->
     </tr>
   </ng-template>
 
