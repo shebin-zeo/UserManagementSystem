@@ -24,7 +24,10 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-user>
-    <tr>
+<tr 
+    class="cursor-pointer hover:bg-gray-100"
+    (click)="viewUser(user.userId)"
+  >
       <td>{{ user.userId }}</td>
       <td>{{ user.firstName }}</td>
       <td>{{ user.lastName }}</td>

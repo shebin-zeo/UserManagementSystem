@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -13,6 +14,7 @@ import { UserService } from '../service/user.service';
 export class ListComponent {
 
   private userService = inject(UserService);
+  private router=inject(Router)
 
   users: any[] = [];
   totalRecords = 0;
@@ -35,5 +37,13 @@ export class ListComponent {
         this.loading = false;
 
       });
+  }
+
+  viewUser(userId:string){
+
+   console.log("The user id is : ",userId)
+
+    this.router.navigate([`/user/${userId}`])
+
   }
 }
