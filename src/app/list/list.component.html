@@ -86,8 +86,8 @@
       <th>First Name</th>
       <th>Last Name</th>
       <th>Email</th>
-      <!-- <th>Status</th>
-      <th>User Type</th> -->
+      <th>Status</th>
+      <th>User Type</th>
     </tr>
   </ng-template>
 
@@ -100,8 +100,16 @@
       <td>{{ user.firstName }}</td>
       <td>{{ user.lastName }}</td>
       <td>{{ user.email }}</td>
-      <!-- <td>{{userStatus[user.status] }}</td>
-      <td>{{ userTypeMap[user.userType] }}</td> -->
+      <td>
+        <span [ngClass]="getStatusColour(user.status)">
+        {{userStatus[user.status] }}
+        </span>
+      </td>
+      <td>
+        <span [ngClass]="getUserTypeColor(user.userType)">
+        {{ userTypeMap[user.userType] }}
+        </span>
+      </td>
     </tr>
   </ng-template>
 

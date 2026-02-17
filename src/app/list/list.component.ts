@@ -7,12 +7,13 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar'; // Use Toolbar instead
 import { AuthService } from '../service/auth.service';
+import { NgClass } from '@angular/common';
 
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [TableModule, ButtonModule, ToastModule,ToolbarModule],
+  imports: [TableModule, ButtonModule, ToastModule, ToolbarModule, NgClass],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
   providers: [MessageService]
@@ -165,5 +166,31 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/login'])
 
     },1000)
+  }
+
+
+// Coloring the user status base with angular ng class
+  getStatusColour(status: string): string {
+  switch (status) {
+    case "ACTIVE":
+      return 'bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm font-medium';
+    case "PROCEED":
+      return 'bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm font-medium';
+    case "DELETED":
+      return 'bg-red-100 text-red-700 px-2 py-1 rounded-full text-sm font-medium';
+    default:
+      return '';
+  }
+}
+
+getUserTypeColor(userType:number):string{
+  switch(userType){
+    case 0:
+      return 'bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-semibold';
+    case 1:
+      return 'bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-sm fond-semibold';
+    default:
+      return '';
+    }
   }
 }
