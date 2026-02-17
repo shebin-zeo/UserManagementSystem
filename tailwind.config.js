@@ -1,11 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
-  safelist: [
-    {
-      pattern: /^p-/,  // Protect all PrimeNG classes
-    }
-  ],
+  // safelist: [
+  //   {
+  //     pattern: /^p-/,  // Protect all PrimeNG classes
+  //   }
+  // ],
   theme: {
     extend: {
       keyframes: {
