@@ -1,0 +1,129 @@
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { UserService } from '../service/user.service';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { error } from 'console';
+export interface User{
+  userId:string,
+  firstName:string,
+  lastName:string,
+  email:string,
+  userType:number
+
+
+}
+
+@Component({
+  selector: 'app-form',
+  standalone: true,
+  imports: [FormsModule,ButtonModule,DropdownModule,ToastModule],
+  templateUrl: './form.component.html',
+  styleUrl: './form.component.css',
+  providers:[MessageService]
+})
+
+
+
+export class FormComponent {
+
+  user:User={
+    userId:'',
+    firstName:'',
+    lastName:'',
+    email:'',
+    userType:1
+
+  }
+
+  UserTypeOption=[
+    {name:"ADMIN",value:0},
+    {name:"GENERAL",value:1}
+  ]
+
+  errorMessages:any;
+
+  private router=inject(Router)
+
+  private userService=inject(UserService)
+  
+  private message=inject(MessageService)
+
+
+  home()
+  {
+    this.router.navigate(['/home'])
+  }
+
+  list()
+  {
+    this.router.navigate(['/list'])
+  }
+
+  userCreate()
+  {
+
+    if(this.user.userType ===null)
+    {
+      this.message.add({
+        severity:'secondary',
+        summary: 'Warning',
+         detail: 'Please choose Any user type'
+
+      })
+      return;
+    }
+    else{
+      const payload={
+
+          userId:this.user.userId,
+          firstName:this.user.firstName,
+          lastName:this.user.lastName,
+          email:this.user.email,
+          userType:this.user.userType
+        
+      }
+      console.log("Data for sending to backend : ",payload)
+
+      this.userService.createUser(payload).subscribe({
+        next:(res)=>{
+
+       this.cancel();
+        
+        },
+        error:(err)=>{
+         this.errorMessages=err.error
+
+         if(err.error.message)
+         {
+         this.message.add({
+           key:'t1',
+           severity: 'warn', summary: 'Warn', detail: err.error.message
+           
+         })
+        }
+         console.log("Error messages in ",this.errorMessages)
+
+         console.log("Direct message printing",err)
+        }
+      })
+    }
+    
+  }
+
+
+  cancel()
+  {
+       this.user.userId='';
+          this.user.firstName='';
+          this.user.lastName='';
+          this.user.email='';
+  }
+
+  
+
+
+}
