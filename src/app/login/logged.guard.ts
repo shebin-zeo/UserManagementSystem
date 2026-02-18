@@ -14,7 +14,7 @@ export const loggedGuard: CanActivateFn = (route, state) => {
   
   if(isPlatformBrowser(platformId))
   {
-      const token=inject(AuthService).isLoggedIn();
+      const token=inject(AuthService).getToken();
       if(token)
       {
         router.navigate(['/home']);

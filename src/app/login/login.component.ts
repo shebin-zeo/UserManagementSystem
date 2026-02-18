@@ -44,7 +44,7 @@ export class LoginComponent {
           severity:'success',
           summary:'Login Successful',
           detail:'Welcome back '+this.username,
-          life:3000
+          life:1500
         })
 
         setTimeout(()=>{
@@ -55,6 +55,8 @@ export class LoginComponent {
       },
       error:(err)=>{
 
+
+        
         this.messageService.add({
           key:'t1',
           severity:'error',
