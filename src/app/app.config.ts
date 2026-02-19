@@ -9,6 +9,7 @@ import { authInterceptor } from './login/auth.interceptor';
 import { refreshInterceptor } from './login/refresh.interceptor';
 import { errorInterceptor } from './login/error.interceptor';
 import { retryInterceptor } from './login/retry.interceptor';
+import { ngrokInterceptor  } from './ngrok-interceptor.interceptor';
 
 
 
@@ -23,10 +24,12 @@ export const appConfig: ApplicationConfig = {
       withInterceptors(
 
         [
+          ngrokInterceptor, 
           authInterceptor,
           refreshInterceptor,
           retryInterceptor,
-          errorInterceptor
+          errorInterceptor,
+          
 
         ],
        
