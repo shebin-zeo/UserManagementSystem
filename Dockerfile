@@ -6,8 +6,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# 🔥 Increase memory for Angular build
+ENV NODE_OPTIONS=--max-old-space-size=1024
+
 COPY . .
 RUN npm run build -- --configuration production
+
 
 
 # ---------- Stage 2: Run SSR ----------
