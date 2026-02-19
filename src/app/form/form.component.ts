@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { UserService } from '../service/user.service';
@@ -28,7 +28,26 @@ export interface User{
 
 
 
-export class FormComponent {
+export class FormComponent implements OnInit {
+
+  userIdUpdate:string=''
+
+  ngOnInit(): void {
+    const id=this.routes.snapshot.paramMap.get("id")
+    console.log("User id for update : ",id)
+
+    if(id)
+    {
+      this.isEdit=true
+
+      this.userService.getUser(id).subscribe({
+        next:(res)=>{
+          this.user=res
+        }
+      })
+    }
+  }
+ 
 
   user:User={
     userId:'',
@@ -46,11 +65,16 @@ export class FormComponent {
 
   errorMessages:any;
 
+  isEdit=false;
+
   private router=inject(Router)
 
   private userService=inject(UserService)
   
   private message=inject(MessageService)
+
+  private routes=inject(ActivatedRoute)
+  
 
 
   home()
@@ -61,6 +85,18 @@ export class FormComponent {
   list()
   {
     this.router.navigate(['/list'])
+  }
+
+
+
+  saveUser(){
+    if(this.isEdit)
+    {
+      this.updateUser()
+    }
+    else{
+      this.userCreate()
+    }
   }
 
   userCreate()
@@ -91,6 +127,11 @@ export class FormComponent {
       this.userService.createUser(payload).subscribe({
         next:(res)=>{
 
+           this.message.add({
+           key:'t1',
+           severity: 'success', summary: 'Success', detail: "User Created"
+           
+         })
        this.cancel();
         
         },
@@ -112,6 +153,30 @@ export class FormComponent {
       })
     }
     
+  }
+
+
+  updateUser()
+  {
+    this.userService.updateUser(this.user.userId,this.user).subscribe({
+      next:()=>{
+        this.message.add({
+          severity:'success',
+          summary:"SuccessFully Updated ",
+          detail:"Successfully updated"+this.user.userId
+        })
+      },
+
+      error:(err)=>{
+         this.message.add({
+          severity:'error',
+          summary:"Error ",
+          detail:err.error
+        })
+      }
+    })
+
+
   }
 
 

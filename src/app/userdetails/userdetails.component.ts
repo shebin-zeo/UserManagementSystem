@@ -4,13 +4,16 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import { UserService } from '../service/user.service';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-userdetails',
   standalone: true,
-  imports: [FormsModule,ButtonModule],
+  imports: [FormsModule,ButtonModule,ToastModule],
   templateUrl: './userdetails.component.html',
-  styleUrl: './userdetails.component.css'
+  styleUrl: './userdetails.component.css',
+  providers:[MessageService]
 })
 export class UserdetailsComponent implements OnInit,OnDestroy{
 
@@ -23,7 +26,8 @@ export class UserdetailsComponent implements OnInit,OnDestroy{
 
   private statusTypeMap:Record<string,string>={
     "PROCEED":"PENDING",
-    "ACTIVE":"APPROVED"
+    "ACTIVE":"APPROVED",
+    "DELETED":"DELETED"
   }
 
   users:any
@@ -38,8 +42,10 @@ export class UserdetailsComponent implements OnInit,OnDestroy{
   private userService=inject(UserService)
 
 private router=inject(Router)
+ private messageService=inject(MessageService);
 
   ngOnInit(): void {
+
     this.routes.paramMap
     .pipe(
       switchMap(params=>{
@@ -83,6 +89,28 @@ private router=inject(Router)
     this.router.navigate(['/list'])
   }
   
+  verifyData()
+  {
+   const userId= this.routes.snapshot.paramMap.get("id")
+   if(userId)
+   {
+    this.userService.verifyUser(userId).subscribe({
+      next:(res)=>{
+
+        
+        this.messageService.add({
+           severity: 'success', summary: 'Success', detail: 'User Successfully Verified' 
+        })
+      },
+      error:(err)=>{
+        console.log("Message error: ",err.error.message)
+        this.messageService.add(
+          { severity: 'error', summary: 'Error', detail: err.error.message }
+        )
+      }
+    })
+   }
+  }
 
 
 }

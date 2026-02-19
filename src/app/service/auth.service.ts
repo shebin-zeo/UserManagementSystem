@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -10,7 +11,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(body: any): Observable<any> {
-    return this.http.post<any>('/api/auth/login', body, {
+    return this.http.post<any>(`${environment.loginApi}/login`, body, {
       withCredentials: true
     }).pipe(
       tap(res => {
@@ -28,14 +29,14 @@ export class AuthService {
   }
 
   refreshToken(): Observable<any> {
-    return this.http.post<any>('/api/auth/refresh', {}, {
+    return this.http.post<any>(`${environment.loginApi}/refresh`, {}, {
       withCredentials: true
     });
   }
 
   logout(): Observable<any> {
     this.accessToken = null;
-    return this.http.post('/api/auth/logout', {}, {
+    return this.http.post(`${environment.loginApi}/logout`, {}, {
       withCredentials: true
     });
   }

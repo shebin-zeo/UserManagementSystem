@@ -8,12 +8,19 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar'; // Use Toolbar instead
 import { AuthService } from '../service/auth.service';
 import { NgClass } from '@angular/common';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import {FloatLabelModule} from 'primeng/floatlabel'
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+
 
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [TableModule, ButtonModule, ToastModule, ToolbarModule, NgClass],
+  imports: [TableModule, ButtonModule, ToastModule, ToolbarModule, NgClass, InputTextModule, DropdownModule,FormsModule,FloatLabelModule,InputIconModule,IconFieldModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
   providers: [MessageService]
@@ -28,6 +35,13 @@ export class ListComponent implements OnInit {
   totalRecords = 0;
   loading = false;
   selectedUser: any = null;
+
+  userIdFilter?: string ;
+firstNameFilter?: string;
+emailFilter?: string;
+statusFilter?: string;
+sortByFilter?: string;
+sortDirectionFilter?: 'ASC'|'DESC';
 
 
  userTypeMap:Record<number,string>={
@@ -44,14 +58,21 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     // Initial load
-    this.loadUsers({ first: 0, rows: 10 });
+    this.loadUsers({ first: 0, rows: 8 });
   }
 
   loadUsers(event: any) {
     this.loading = true;
     const page = event.first / event.rows;
     const size = event.rows;
-    const filter = {}; 
+    const filter = {
+      userId:this.userIdFilter,
+      firstName:this.firstNameFilter,
+      email:this.emailFilter,
+      status:this.statusFilter,
+      sortBy:this.sortByFilter,
+      sortDirection:this.sortDirectionFilter
+    }; 
     
     this.userService.getAllUsers(filter, page, size)
       .subscribe({
@@ -168,16 +189,21 @@ export class ListComponent implements OnInit {
     },1000)
   }
 
+  applyFilter()
+  {
+    this.loadUsers( {first: 0, rows: 8 })
+  }
+
 
 // Coloring the user status base with angular ng class
   getStatusColour(status: string): string {
   switch (status) {
     case "ACTIVE":
-      return 'bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm font-medium';
+      return 'bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm font-medium pi pi-verified';
     case "PROCEED":
-      return 'bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm font-medium';
+      return 'bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm font-medium pi pi-info-circle';
     case "DELETED":
-      return 'bg-red-100 text-red-700 px-2 py-1 rounded-full text-sm font-medium';
+      return 'bg-red-100 text-red-700 px-2 py-1 rounded-full text-sm font-medium pi pi-trash';
     default:
       return '';
   }
@@ -193,4 +219,38 @@ getUserTypeColor(userType:number):string{
       return '';
     }
   }
+
+
+  clearFilter()
+  {
+     this.userIdFilter = undefined;
+  this.firstNameFilter = undefined;
+  this.emailFilter = undefined;
+  this.statusFilter = undefined;
+  this.sortByFilter = undefined;
+  this.sortDirectionFilter = undefined;
+  
+   
+    this.loadUsers({first:0,rows:8})
+    
+  }
+
+  userStatusOptions=[
+    {name:"APPROVED",value:"ACTIVE"},
+    {name:"PENDING",value:"PROCEED"},
+    {name:"DELETED",value:"DELETED"}
+  ]
+
+  sortByOptions=[
+    {name:"User ID",value:"userId"},
+    {name:"First Name", value:"firstName"},
+    {name:"Email",value:"email"}
+  ]
+  sortByDirectionOption=[
+    {name:"ASCENDING ORDER",value:"ASC"},
+    {name:"DESCENDING ORDER",value:"DESC"}
+  ]
+
+
+  
 }

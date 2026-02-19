@@ -1,11 +1,77 @@
 
 <p-toast key="t1"></p-toast>
+
+
+<div class="card flex flex-column md:flex-row gap-5">
+
+      <div class="mt-5 card flex justify-content-center">
+    <p-floatLabel>
+        <input pInputText id="username"  [(ngModel)]="userIdFilter" />
+        <label for="username">Username</label>
+    </p-floatLabel>
+</div>
+  <div class="mt-5 card flex justify-content-center">
+    <p-floatLabel>
+        <input pInputText id="username" [(ngModel)]="firstNameFilter"  />
+        <label for="username">First Name</label>
+    </p-floatLabel>
+</div>
+
+  <div class="mt-5 card flex justify-content-center">
+    <p-floatLabel>
+        <input pInputText id="username"  [(ngModel)]="emailFilter" />
+        <label for="username">Email</label>
+    </p-floatLabel>
+</div>
+
+   
+    
+  <div class="mt-5 card flex justify-content-center">
+    <p-dropdown 
+        optionLabel="name"
+        [options]="userStatusOptions"
+        [(ngModel)]="statusFilter"
+        [showClear]="true"
+        [editable]="true"
+        [checkmark]="true" 
+        optionValue="value"
+        placeholder="User Status" />
+        </div>
+  <div class="mt-5 card flex justify-content-center">
+        <p-dropdown 
+        optionLabel="name"
+        [options]="sortByOptions"
+        [(ngModel)]="sortByFilter"
+        [showClear]="true"
+        [editable]="true"
+        [checkmark]="true" 
+        optionValue="value"
+        placeholder="Sort" />
+        </div>
+          <div class="mt-5 card flex justify-content-center">
+
+        <p-dropdown 
+        optionLabel="name"
+        [options]="sortByDirectionOption"
+        [(ngModel)]="sortDirectionFilter"
+        [showClear]="true"
+        [editable]="true"
+        [checkmark]="true" 
+        optionValue="value"
+        placeholder="Sort Direction" />
+        </div>
+
+
+
+
+
+</div>
 <p-toolbar>
     <div class="p-toolbar-group-start">
         <p-button 
             label="Create" 
             icon="pi pi-plus"
-            severity="success" 
+            severity="contrast" 
             [outlined]="true"
             class="mr-2" 
             (click)="createUser()" 
@@ -13,7 +79,7 @@
         <p-button 
             label="View" 
             icon="pi pi-eye"
-            severity="info" 
+            severity="contrast" 
             [outlined]="true"
             class="mr-2" 
             (click)="viewUser()" 
@@ -21,7 +87,7 @@
         <p-button 
             label="Update" 
             icon="pi pi-pencil"
-            severity="warning" 
+            severity="contrast" 
             [outlined]="true"
             class="mr-2" 
             (click)="updateUser()" 
@@ -29,7 +95,7 @@
          <p-button 
             label="Delete" 
             icon="pi pi-trash"
-            severity="danger" 
+            severity="contrast" 
             [outlined]="true"
             class="mr-2" 
             (click)="deleteUser()" 
@@ -41,14 +107,36 @@
         [outlined]="true"
         class="mr-2"
         /> -->
+
+        
+
+        
     </div>
     
     <div class="p-toolbar-group-end">
+
+      <p-button 
+            label="Apply Filter" 
+            icon="pi pi-filter"
+            severity="contrast" 
+            [outlined]="true"
+            class="mr-2" 
+            (click)="applyFilter()" 
+        />
+
+          <p-button 
+            label="Clear Filter" 
+            icon="pi pi-filter-slash"
+            severity="contrast" 
+            [outlined]="true"
+            class="mr-2" 
+            (click)="clearFilter()" 
+        />
        
         <p-button 
             label="Home" 
             icon="pi pi-home"
-            severity="help" 
+            severity="contrast" 
             [outlined]="true"
             class="mr-2"
             (click)="goHome()" 
@@ -56,7 +144,7 @@
         <p-button
         label="Exit"
         icon="pi pi-sign-out"
-        severity="danger"
+        severity="contrast"
         [outlined]="true"
         class="mr-2"
         (click)="logout()"
@@ -67,12 +155,12 @@
 </p-toolbar>
 
 
-<p-table
+<p-table 
   [value]="users"
   [lazy]="true"
   (onLazyLoad)="loadUsers($event)"
   [paginator]="true"
-  [rows]="10"
+  [rows]="8"
   [totalRecords]="totalRecords"
   [loading]="loading"
   selectionMode="single"

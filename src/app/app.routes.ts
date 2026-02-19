@@ -13,5 +13,6 @@ export const routes: Routes = [
     {path:'home',component:HomeComponent,canActivate:[authGuard]},
     {path:"list",component:ListComponent,canActivate:[authGuard]},
     {path:'user/create',component:FormComponent,canActivate:[authGuard]},
+    {path:'user/edit/:id',component:FormComponent,canActivate:[authGuard]},
     {path:'user/:id',component:UserdetailsComponent,canActivate:[authGuard]}
 ];

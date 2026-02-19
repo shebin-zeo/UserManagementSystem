@@ -9,7 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 
   // 1. Define routes that should NOT have the Bearer token
-  const isExcluded = req.url.includes('/api/auth/login') || req.url.includes('/api/auth/refresh');
+  const isExcluded = req.url.includes('/login') || req.url.includes('/refresh');
 
   if (token && !isExcluded) {
     req = req.clone({

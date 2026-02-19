@@ -85,4 +85,9 @@ export class UserService {
   {
     return this.http.post<Page<any>>(`${this.apiUrl}/all?page=${page}&size=${size}`,filter)
   }
+
+  verifyUser(userId:string):Observable<any>{
+    return this.http.put(`${this.apiUrl}/verify/${userId}`,{})
+
+  }
 }
